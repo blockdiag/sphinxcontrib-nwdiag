@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
 from ..utils import with_built_docstring
 
 import sys
@@ -192,7 +193,7 @@ class TestSphinxcontribRackdiagHTML(unittest.TestCase):
                                               '<img .*? src="\\1" usemap="#\\2" .*?/></a></div>'))
 
     @with_built_docstring(buildername='html', confoverrides=png_config)
-    def test_reftarget_in_href_on_png(self, app):
+    def test_reftarget_in_href_on_png1(self, app):
         """
         .. _target:
 
@@ -210,6 +211,41 @@ class TestSphinxcontribRackdiagHTML(unittest.TestCase):
             self.assertRegexpMatches(source, ('<div><map name="(map_\d+)">'
                                               '<area shape="rect" coords="64.0,1680.0,192.0,1720.0" href="#target">'
                                               '</map><img .*? src=".*?.png" usemap="#\\1" .*?/></div>'))
+
+    @with_built_docstring(buildername='html', confoverrides=png_config)
+    def test_reftarget_in_href_on_png2(self, app):
+        """
+        .. _hello world:
+
+        heading2
+        ---------
+
+        .. rackdiag::
+
+           * A [href = ':ref:`hello world`'];
+           * B
+        """
+        filename = os.path.join(app.outdir, 'index.html')
+        with open(filename) as fd:
+            source = fd.read()
+            self.assertRegexpMatches(source, ('<div><map name="(map_\d+)">'
+                                              '<area shape="rect" coords="64.0,1680.0,192.0,1720.0" href="#hello-world">'
+                                              '</map><img .*? src=".*?.png" usemap="#\\1" .*?/></div>'))
+
+    @with_built_docstring(buildername='html', confoverrides=png_config)
+    def test_missing_reftarget_in_href_on_png(self, app):
+        """
+        .. rackdiag::
+
+           * A [href = ':ref:`unknown_target`'];
+           * B
+        """
+        filename = os.path.join(app.outdir, 'index.html')
+        with open(filename) as fd:
+            source = fd.read()
+            self.assertRegexpMatches(source, ('<div><img .*? src=".*?.png" .*?/></div>'))
+            self.assertIn('undefined label: unknown_target',
+                          app.builder.warn.call_args_list[0][0][0])
 
     @with_built_docstring(buildername='html', confoverrides=svg_config)
     def test_build_svg_image(self, app):
@@ -325,7 +361,7 @@ class TestSphinxcontribRackdiagHTML(unittest.TestCase):
             self.assertRegexpMatches(source, '<div><span id="target"></span><svg .*?>')
 
     @with_built_docstring(buildername='html', confoverrides=svg_config)
-    def test_reftarget_in_href_on_svg(self, app):
+    def test_reftarget_in_href_on_svg1(self, app):
         """
         .. _target:
 
@@ -341,3 +377,39 @@ class TestSphinxcontribRackdiagHTML(unittest.TestCase):
         with open(filename) as fd:
             source = fd.read()
             self.assertRegexpMatches(source, '<a xlink:href="#target">\\n\\s*<rect .*?>\\n\\s*<text .*?>A</text>\\n\\s*</a>')
+
+    @with_built_docstring(buildername='html', confoverrides=svg_config)
+    def test_reftarget_in_href_on_svg2(self, app):
+        """
+        .. _hello world:
+
+        heading2
+        ---------
+
+        .. rackdiag::
+
+           * A [href = ':ref:`hello world`'];
+           * B
+        """
+        filename = os.path.join(app.outdir, 'index.html')
+        with open(filename) as fd:
+            source = fd.read()
+            self.assertRegexpMatches(source, '<a xlink:href="#hello-world">\\n\\s*<rect .*?>\\n\\s*<text .*?>A</text>\\n\\s*</a>')
+
+    @with_built_docstring(buildername='html', confoverrides=svg_config)
+    def test_missing_reftarget_in_href_on_svg(self, app):
+        """
+        .. rackdiag::
+
+           * A [href = ':ref:`unknown_target`'];
+           * B
+        """
+        filename = os.path.join(app.outdir, 'index.html')
+        with open(filename) as fd:
+            source = fd.read()
+            if sys.version_info < (3, 0):
+                self.assertNotRegexpMatches(source, '<a xlink:href="#hello-world">\\n\\s*<rect .*?>\\n\\s*</a>')
+            else:
+                self.assertNotRegex(source, '<a xlink:href="#hello-world">\\n\\s*<rect .*?>\\n\\s*</a>')
+            self.assertIn('undefined label: unknown_target',
+                          app.builder.warn.call_args_list[0][0][0])
