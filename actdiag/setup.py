@@ -6,11 +6,11 @@ requires = ['actdiag>=0.5.3', 'Sphinx>=0.6', 'setuptools']
 
 setup(
     name='sphinxcontrib-actdiag',
-    version='0.7.2',
+    version='0.8.0',
     url='http://bitbucket.org/birkenfeld/sphinx-contrib',
     download_url='http://pypi.python.org/pypi/sphinxcontrib-actdiag',
     license='BSD',
-    author='Takeshi Komiya',
+    author='Takeshi KOMIYA',
     author_email='i.tkomiya@gmail.com',
     description='Sphinx "actdiag" extension',
     long_description=open('README.rst').read(),
