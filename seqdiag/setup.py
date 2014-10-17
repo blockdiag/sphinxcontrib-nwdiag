@@ -6,11 +6,11 @@ requires = ['seqdiag>=0.9.3', 'Sphinx>=0.6', 'setuptools']
 
 setup(
     name='sphinxcontrib-seqdiag',
-    version='0.7.2',
+    version='0.8.0',
     url='http://bitbucket.org/birkenfeld/sphinx-contrib',
     download_url='http://pypi.python.org/pypi/sphinxcontrib-seqdiag',
     license='BSD',
-    author='Takeshi Komiya',
+    author='Takeshi KOMIYA',
     author_email='i.tkomiya@gmail.com',
     description='Sphinx "seqdiag" extension',
     long_description=open('README.rst').read(),
