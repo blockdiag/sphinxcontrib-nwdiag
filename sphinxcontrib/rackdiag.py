@@ -38,8 +38,10 @@ class rackdiag_node(rackdiag.utils.rst.nodes.rackdiag):
             filename = self.get_abspath(image_format, builder)
 
         antialias = builder.config.rackdiag_antialias
+        transparency = builder.config.rackdiag_transparency
         image = super(rackdiag_node, self).to_drawer(image_format, filename, fontmap,
-                                                     antialias=antialias, **kwargs)
+                                                     antialias=antialias, transparency=transparency,
+                                                     **kwargs)
         for node in image.diagram.traverse_nodes():
             node.href = resolve_reference(builder, node.href)
 
@@ -305,6 +307,7 @@ def setup(app):
     app.add_config_value('rackdiag_fontpath', None, 'html')
     app.add_config_value('rackdiag_fontmap', None, 'html')
     app.add_config_value('rackdiag_antialias', False, 'html')
+    app.add_config_value('rackdiag_transparency', True, 'html')
     app.add_config_value('rackdiag_debug', False, 'html')
     app.add_config_value('rackdiag_html_image_format', 'PNG', 'html')
     app.add_config_value('rackdiag_tex_image_format', None, 'html')  # backward compatibility for 0.6.1
