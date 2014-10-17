@@ -38,8 +38,10 @@ class packetdiag_node(packetdiag.utils.rst.nodes.packetdiag):
             filename = self.get_abspath(image_format, builder)
 
         antialias = builder.config.packetdiag_antialias
+        transparency = builder.config.packetdiag_transparency
         image = super(packetdiag_node, self).to_drawer(image_format, filename, fontmap,
-                                                       antialias=antialias, **kwargs)
+                                                       antialias=antialias, transparency=transparency,
+                                                       **kwargs)
         for node in image.diagram.traverse_nodes():
             node.href = resolve_reference(builder, node.href)
 
@@ -305,6 +307,7 @@ def setup(app):
     app.add_config_value('packetdiag_fontpath', None, 'html')
     app.add_config_value('packetdiag_fontmap', None, 'html')
     app.add_config_value('packetdiag_antialias', False, 'html')
+    app.add_config_value('packetdiag_transparency', True, 'html')
     app.add_config_value('packetdiag_debug', False, 'html')
     app.add_config_value('packetdiag_html_image_format', 'PNG', 'html')
     app.add_config_value('packetdiag_tex_image_format', None, 'html')  # backward compatibility for 0.6.1
