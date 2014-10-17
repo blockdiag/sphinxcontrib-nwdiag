@@ -6,11 +6,11 @@ requires = ['nwdiag>=1.0.3', 'Sphinx>=0.6', 'setuptools']
 
 setup(
     name='sphinxcontrib-nwdiag',
-    version='0.8.2',
+    version='0.9.0',
     url='http://bitbucket.org/birkenfeld/sphinx-contrib',
     download_url='http://pypi.python.org/pypi/sphinxcontrib-nwdiag',
     license='BSD',
-    author='Takeshi Komiya',
+    author='Takeshi KOMIYA',
     author_email='i.tkomiya@gmail.com',
     description='Sphinx "nwdiag" extension',
     long_description=open('README.rst').read(),
