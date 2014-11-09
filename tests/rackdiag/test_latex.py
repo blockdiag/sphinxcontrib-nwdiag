@@ -189,3 +189,15 @@ class TestSphinxcontribRackdiagLatex(unittest.TestCase):
         figure = re.compile('\\\\begin{figure}\\[htbp\\]\\\\begin{flushleft}.*?'
                             '\\\\caption{hello world}\\\\end{flushleft}\\\\end{figure}', re.DOTALL)
         self.assertRegexpMatches(source, figure)
+
+    @with_png_app
+    def test_href(self, app, status, warning):
+        """
+        .. rackdiag::
+
+           * A [href = ':ref:`target`']
+           * B
+        """
+        app.builder.build_all()
+        source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
+        self.assertRegexpMatches(source, '\\\\includegraphics{.*?/latex/rackdiag-.*?.png}')
