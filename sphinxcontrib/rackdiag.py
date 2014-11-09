@@ -51,7 +51,8 @@ class rackdiag_node(rackdiag.utils.rst.nodes.rackdiag):
         options = dict(antialias=builder.config.rackdiag_antialias,
                        fontpath=builder.config.rackdiag_fontpath,
                        fontmap=builder.config.rackdiag_fontmap,
-                       format=image_format)
+                       format=image_format,
+                       transparency=builder.config.rackdiag_transparency)
         outputdir = getattr(builder, 'imgpath', builder.outdir)
         return os.path.join(outputdir, self.get_path(**options))
 
@@ -59,7 +60,8 @@ class rackdiag_node(rackdiag.utils.rst.nodes.rackdiag):
         options = dict(antialias=builder.config.rackdiag_antialias,
                        fontpath=builder.config.rackdiag_fontpath,
                        fontmap=builder.config.rackdiag_fontmap,
-                       format=image_format)
+                       format=image_format,
+                       transparency=builder.config.rackdiag_transparency)
 
         if hasattr(builder, 'imagedir'):  # Sphinx (>= 1.3.x)
             outputdir = os.path.join(builder.outdir, builder.imagedir)

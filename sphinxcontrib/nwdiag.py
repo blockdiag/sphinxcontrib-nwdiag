@@ -51,7 +51,8 @@ class nwdiag_node(nwdiag.utils.rst.nodes.nwdiag):
         options = dict(antialias=builder.config.nwdiag_antialias,
                        fontpath=builder.config.nwdiag_fontpath,
                        fontmap=builder.config.nwdiag_fontmap,
-                       format=image_format)
+                       format=image_format,
+                       transparency=builder.config.nwdiag_transparency)
         outputdir = getattr(builder, 'imgpath', builder.outdir)
         return os.path.join(outputdir, self.get_path(**options))
 
@@ -59,7 +60,8 @@ class nwdiag_node(nwdiag.utils.rst.nodes.nwdiag):
         options = dict(antialias=builder.config.nwdiag_antialias,
                        fontpath=builder.config.nwdiag_fontpath,
                        fontmap=builder.config.nwdiag_fontmap,
-                       format=image_format)
+                       format=image_format,
+                       transparency=builder.config.nwdiag_transparency)
 
         if hasattr(builder, 'imagedir'):  # Sphinx (>= 1.3.x)
             outputdir = os.path.join(builder.outdir, builder.imagedir)

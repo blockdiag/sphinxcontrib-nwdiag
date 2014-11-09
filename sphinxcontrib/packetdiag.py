@@ -51,7 +51,8 @@ class packetdiag_node(packetdiag.utils.rst.nodes.packetdiag):
         options = dict(antialias=builder.config.packetdiag_antialias,
                        fontpath=builder.config.packetdiag_fontpath,
                        fontmap=builder.config.packetdiag_fontmap,
-                       format=image_format)
+                       format=image_format,
+                       transparency=builder.config.packetdiag_transparency)
         outputdir = getattr(builder, 'imgpath', builder.outdir)
         return os.path.join(outputdir, self.get_path(**options))
 
@@ -59,7 +60,8 @@ class packetdiag_node(packetdiag.utils.rst.nodes.packetdiag):
         options = dict(antialias=builder.config.packetdiag_antialias,
                        fontpath=builder.config.packetdiag_fontpath,
                        fontmap=builder.config.packetdiag_fontmap,
-                       format=image_format)
+                       format=image_format,
+                       transparency=builder.config.packetdiag_transparency)
 
         if hasattr(builder, 'imagedir'):  # Sphinx (>= 1.3.x)
             outputdir = os.path.join(builder.outdir, builder.imagedir)
