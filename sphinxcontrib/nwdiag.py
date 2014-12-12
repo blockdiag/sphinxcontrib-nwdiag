@@ -15,6 +15,7 @@ from __future__ import absolute_import
 import os
 import re
 import traceback
+import pkg_resources
 from collections import namedtuple
 from docutils import nodes
 from sphinx import addnodes
@@ -38,8 +39,10 @@ class nwdiag_node(nwdiag.utils.rst.nodes.nwdiag):
             filename = self.get_abspath(image_format, builder)
 
         antialias = builder.config.nwdiag_antialias
+        transparency = builder.config.nwdiag_transparency
         image = super(nwdiag_node, self).to_drawer(image_format, filename, fontmap,
-                                                   antialias=antialias, **kwargs)
+                                                   antialias=antialias, transparency=transparency,
+                                                   **kwargs)
         for node in image.diagram.traverse_nodes():
             node.href = resolve_reference(builder, node.href)
 
@@ -49,7 +52,8 @@ class nwdiag_node(nwdiag.utils.rst.nodes.nwdiag):
         options = dict(antialias=builder.config.nwdiag_antialias,
                        fontpath=builder.config.nwdiag_fontpath,
                        fontmap=builder.config.nwdiag_fontmap,
-                       format=image_format)
+                       format=image_format,
+                       transparency=builder.config.nwdiag_transparency)
         outputdir = getattr(builder, 'imgpath', builder.outdir)
         return os.path.join(outputdir, self.get_path(**options))
 
@@ -57,9 +61,12 @@ class nwdiag_node(nwdiag.utils.rst.nodes.nwdiag):
         options = dict(antialias=builder.config.nwdiag_antialias,
                        fontpath=builder.config.nwdiag_fontpath,
                        fontmap=builder.config.nwdiag_fontmap,
-                       format=image_format)
+                       format=image_format,
+                       transparency=builder.config.nwdiag_transparency)
 
-        if hasattr(builder, 'imgpath'):
+        if hasattr(builder, 'imagedir'):  # Sphinx (>= 1.3.x)
+            outputdir = os.path.join(builder.outdir, builder.imagedir)
+        elif hasattr(builder, 'imgpath'):  # Sphinx (<= 1.2.x) and HTML writer
             outputdir = os.path.join(builder.outdir, '_images')
         else:
             outputdir = builder.outdir
@@ -84,6 +91,8 @@ def resolve_reference(builder, href):
     matched = pattern.search(href)
     if matched is None:
         return href
+    elif not hasattr(builder, 'current_docname'):  # ex. latex builder
+        return matched.group(1)
     else:
         refid = matched.group(1)
         domain = builder.env.domains['std']
@@ -303,9 +312,16 @@ def setup(app):
     app.add_config_value('nwdiag_fontpath', None, 'html')
     app.add_config_value('nwdiag_fontmap', None, 'html')
     app.add_config_value('nwdiag_antialias', False, 'html')
+    app.add_config_value('nwdiag_transparency', True, 'html')
     app.add_config_value('nwdiag_debug', False, 'html')
     app.add_config_value('nwdiag_html_image_format', 'PNG', 'html')
     app.add_config_value('nwdiag_tex_image_format', None, 'html')  # backward compatibility for 0.6.1
     app.add_config_value('nwdiag_latex_image_format', 'PNG', 'html')
     app.connect("builder-inited", on_builder_inited)
     app.connect("doctree-resolved", on_doctree_resolved)
+
+    return {
+        'version': pkg_resources.require('nwdiag')[0].version,
+        'parallel_read_safe': True,
+        'parallel_write_safe': True,
+    }
