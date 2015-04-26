@@ -30,7 +30,19 @@ class TestSphinxcontribRackdiagHTML(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'index.html').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '<div><img .*? src=".*?.png" .*?/></div>')
+        self.assertRegexpMatches(source, '<div><img .*? src="_images/.*?.png" .*?/></div>')
+
+    @with_app(srcdir='tests/docs/rackdiag-subdir', buildername='html', write_docstring=True)
+    def test_build_png_image_in_subdir(self, app, status, warning):
+        """
+        .. rackdiag::
+
+           * A
+           * B
+        """
+        app.builder.build_all()
+        source = (app.outdir / 'subdir' / 'index.html').read_text(encoding='utf-8')
+        self.assertRegexpMatches(source, '<div><img .*? src="\.\./_images/.*?.png" .*?/></div>')
 
     @with_png_app
     def test_width_option_on_png(self, app, status, warning):
