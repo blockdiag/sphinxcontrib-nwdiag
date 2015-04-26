@@ -55,10 +55,8 @@ class packetdiag_node(packetdiag.utils.rst.nodes.packetdiag):
                        fontmap=builder.config.packetdiag_fontmap,
                        format=image_format,
                        transparency=builder.config.packetdiag_transparency)
-        if hasattr(builder, 'imagedir'):  # Sphinx (>= 1.3.x)
-            outputdir = builder.imagedir
-        elif hasattr(builder, 'imgpath'):  # Sphinx (<= 1.2.x) or HTML writer
-            outputdir = '_images'
+        if hasattr(builder, 'imgpath'):  # Sphinx (<= 1.2.x) or HTML writer
+            outputdir = builder.imgpath
         else:
             outputdir = ''
         return os.path.join(outputdir, self.get_path(**options))
