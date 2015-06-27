@@ -7,7 +7,7 @@ requires = ['blockdiag>=1.5.0', 'nwdiag>=1.0.3', 'Sphinx>=0.6']
 setup(
     name='sphinxcontrib-nwdiag',
     version='0.9.3',
-    url='http://github.com/tk0miya/sphinxcontrib-nwdiag',
+    url='http://github.com/blockdiag/sphinxcontrib-nwdiag',
     license='BSD',
     author='Takeshi KOMIYA',
     author_email='i.tkomiya@gmail.com',
