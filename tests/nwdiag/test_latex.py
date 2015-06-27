@@ -158,7 +158,7 @@ class TestSphinxcontribNwdiagLatex(unittest.TestCase):
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
         self.assertRegexpMatches(source, '\\\\includegraphics{nwdiag-.*?.png}')
 
-        figure = re.compile('\\\\begin{figure}\\[htbp\\]\n\\\\centering.*?'
+        figure = re.compile('\\\\begin{figure}\\[htbp\\]\r?\n\\\\centering.*?'
                             '\\\\caption{hello world}\\\\end{figure}', re.DOTALL)
         self.assertRegexpMatches(source, figure)
 
