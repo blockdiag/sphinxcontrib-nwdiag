@@ -2,14 +2,14 @@
 sphinxcontrib-nwdiag
 ====================
 
-.. image:: https://travis-ci.org/tk0miya/sphinxcontrib-nwdiag.svg?branch=master
-   :target: https://travis-ci.org/tk0miya/sphinxcontrib-nwdiag
+.. image:: https://travis-ci.org/blockdiag/sphinxcontrib-nwdiag.svg?branch=master
+   :target: https://travis-ci.org/blockdiag/sphinxcontrib-nwdiag
 
-.. image:: https://coveralls.io/repos/tk0miya/sphinxcontrib-nwdiag/badge.png?branch=master
-   :target: https://coveralls.io/r/tk0miya/sphinxcontrib-nwdiag?branch=master
+.. image:: https://coveralls.io/repos/blockdiag/sphinxcontrib-nwdiag/badge.png?branch=master
+   :target: https://coveralls.io/r/blockdiag/sphinxcontrib-nwdiag?branch=master
 
-.. image:: https://codeclimate.com/github/tk0miya/sphinxcontrib-nwdiag/badges/gpa.svg
-   :target: https://codeclimate.com/github/tk0miya/sphinxcontrib-nwdiag
+.. image:: https://codeclimate.com/github/blockdiag/sphinxcontrib-nwdiag/badges/gpa.svg
+   :target: https://codeclimate.com/github/blockdiag/sphinxcontrib-nwdiag
 
 A sphinx extension for embedding network related diagrams using blockdiag_.
 
