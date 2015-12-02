@@ -11,7 +11,7 @@ sphinxcontrib-nwdiag
 .. image:: https://codeclimate.com/github/blockdiag/sphinxcontrib-nwdiag/badges/gpa.svg
    :target: https://codeclimate.com/github/blockdiag/sphinxcontrib-nwdiag
 
-A sphinx extension for embedding network related diagrams using blockdiag_.
+A sphinx extension for embedding network related diagrams using nwdiag_.
 
 For now, nwdiag supports these diagrams:
 
