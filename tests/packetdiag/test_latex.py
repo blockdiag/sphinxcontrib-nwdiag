@@ -11,6 +11,8 @@ if sys.version_info < (2, 7):
 else:
     import unittest
 
+CR = '\r?\n'
+
 packetdiag_fontpath = '/usr/share/fonts/truetype/ipafont/ipagp.ttf'
 with_png_app = with_app(srcdir='tests/docs/packetdiag',
                         buildername='latex',
@@ -47,7 +49,7 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '\\\\includegraphics{packetdiag-.*?.png}')
+        self.assertRegexpMatches(source, r'\\sphinxincludegraphics{{packetdiag-.*?}.png}')
 
     @unittest.skipUnless(os.path.exists(packetdiag_fontpath), "TrueType font not found")
     @unittest.skipIf(sys.version_info[:2] == (3, 2), "reportlab does not support python 3.2")
@@ -61,7 +63,7 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '\\\\includegraphics{packetdiag-.*?.pdf}')
+        self.assertRegexpMatches(source, r'\\sphinxincludegraphics{{packetdiag-.*?}.pdf}')
 
     @unittest.skipUnless(os.path.exists(packetdiag_fontpath), "TrueType font not found")
     @unittest.skipIf(sys.version_info[:2] == (3, 2), "reportlab does not support python 3.2")
@@ -75,7 +77,7 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '\\\\includegraphics{packetdiag-.*?.pdf}')
+        self.assertRegexpMatches(source, r'\\sphinxincludegraphics{{packetdiag-.*?}.pdf}')
 
     @with_png_app
     def test_width_option(self, app, status, warning):
@@ -88,7 +90,7 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '\\\\includegraphics\\[width=3cm\\]{packetdiag-.*?.png}')
+        self.assertRegexpMatches(source, r'\\sphinxincludegraphics\[width=3cm\]{{packetdiag-.*?}.png}')
 
     @with_png_app
     def test_height_option(self, app, status, warning):
@@ -101,7 +103,7 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '\\\\includegraphics\\[height=4cm\\]{packetdiag-.*?.png}')
+        self.assertRegexpMatches(source, r'\\sphinxincludegraphics\[height=4cm\]{{packetdiag-.*?}.png}')
 
     @with_png_app
     def test_scale_option(self, app, status, warning):
@@ -114,7 +116,7 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '\\\\scalebox{0.500000}{\\\\includegraphics{packetdiag-.*?.png}}')
+        self.assertRegexpMatches(source, r'\\sphinxincludegraphics\[scale=0.5\]{{packetdiag-.*?}.png}')
 
     @with_png_app
     def test_align_option_left(self, app, status, warning):
@@ -127,7 +129,8 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '{\\\\includegraphics{packetdiag-.*?.png}\\\\hfill}')
+        self.assertRegexpMatches(source, (r'{\\sphinxincludegraphics{{packetdiag-.*?}.png}'
+                                          r'\\hspace\*{\\fill}}'))
 
     @with_png_app
     def test_align_option_center(self, app, status, warning):
@@ -140,7 +143,9 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '{\\\\hfill\\\\includegraphics{packetdiag-.*?.png}\\\\hfill}')
+        self.assertRegexpMatches(source, (r'{\\hspace\*{\\fill}'
+                                          r'\\sphinxincludegraphics{{packetdiag-.*?}.png}'
+                                          r'\\hspace\*{\\fill}}'))
 
     @with_png_app
     def test_align_option_right(self, app, status, warning):
@@ -153,7 +158,8 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '{\\\\hfill\\\\includegraphics{packetdiag-.*?.png}}')
+        self.assertRegexpMatches(source, (r'{\\hspace\*{\\fill}'
+                                          r'\\sphinxincludegraphics{{packetdiag-.*?}.png}}'))
 
     @with_png_app
     def test_caption_option(self, app, status, warning):
@@ -166,10 +172,13 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '\\\\includegraphics{packetdiag-.*?.png}')
 
-        figure = re.compile('\\\\begin{figure}\\[htbp\\]\r?\n\\\\centering.*?'
-                            '\\\\caption{hello world}\\\\end{figure}', re.DOTALL)
+        figure = re.compile((r'\\begin{figure}\[htbp\]' + CR +
+                             r'\\centering' + CR +
+                             r'\\capstart' + CR + CR +
+                             r'\\noindent\\sphinxincludegraphics{{packetdiag-.*?}.png}' + CR +
+                             r'\\caption{hello world}\\label{\\detokenize{index:id1}}\\end{figure}'),
+                            re.DOTALL)
         self.assertRegexpMatches(source, figure)
 
     @with_png_app
@@ -184,10 +193,12 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '\\\\includegraphics{packetdiag-.*?.png}')
 
-        figure = re.compile('\\\\begin{figure}\\[htbp\\]\\\\begin{flushleft}.*?'
-                            '\\\\caption{hello world}\\\\end{flushleft}\\\\end{figure}', re.DOTALL)
+        figure = re.compile((r'\\begin{wrapfigure}{l}{0pt}' + CR +
+                             r'\\centering' + CR +
+                             r'\\noindent\\sphinxincludegraphics{{packetdiag-.*?}.png}' + CR +
+                             r'\\caption{hello world}\\label{\\detokenize{index:id1}}\\end{wrapfigure}'),
+                            re.DOTALL)
         self.assertRegexpMatches(source, figure)
 
     @with_png_app
@@ -200,4 +211,4 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'test.tex').read_text(encoding='utf-8')
-        self.assertRegexpMatches(source, '\\\\includegraphics{packetdiag-.*?.png}')
+        self.assertRegexpMatches(source, r'\\sphinxincludegraphics{{packetdiag-.*?}.png}')

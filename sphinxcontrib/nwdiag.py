@@ -20,6 +20,7 @@ import pkg_resources
 from collections import namedtuple
 from docutils import nodes
 from sphinx import addnodes
+from sphinx.util import logging
 from sphinx.util.osutil import ensuredir
 
 import nwdiag.utils.rst.nodes
@@ -31,6 +32,8 @@ from blockdiag.utils.rst.directives import with_blockdiag
 
 # fontconfig; it will be initialized on `builder-inited` event.
 fontmap = None
+
+logger = logging.getLogger(__name__)
 
 
 class nwdiag_node(nwdiag.utils.rst.nodes.nwdiag):
@@ -110,7 +113,7 @@ def resolve_reference(builder, href):
             else:
                 return xref['refuri']
         else:
-            builder.warn('undefined label: %s' % refid)
+            logger.warning('undefined label: %s', refid)
             return None
 
 
@@ -212,13 +215,13 @@ def html_visit_nwdiag(self, node):
 
         msg = ("nwdiag error: UnicodeEncodeError caught "
                "(check your font settings)")
-        self.builder.warn(msg)
+        logger.warning(msg)
         raise nodes.SkipNode
     except Exception as exc:
         if self.builder.config.nwdiag_debug:
             traceback.print_exc()
 
-        self.builder.warn('dot code %r: %s' % (node['code'], str(exc)))
+        logger.warning('dot code %r: %s', node['code'], exc)
         raise nodes.SkipNode
 
 
@@ -253,7 +256,7 @@ def get_image_format_for(builder):
 def on_builder_inited(self):
     # show deprecated message
     if self.builder.config.nwdiag_tex_image_format:
-        self.builder.warn('nwdiag_tex_image_format is deprecated. Use nwdiag_latex_image_format.')
+        logger.warning('nwdiag_tex_image_format is deprecated. Use nwdiag_latex_image_format.')
 
     # initialize fontmap
     global fontmap
@@ -287,7 +290,7 @@ def on_doctree_resolved(self, doctree, docname):
         if self.builder.config.nwdiag_debug:
             traceback.print_exc()
 
-        self.builder.warn('nwdiag error: %s' % exc)
+        logger.warning('nwdiag error: %s', exc)
         for node in doctree.traverse(nwdiag_node):
             node.parent.remove(node)
 
@@ -308,7 +311,7 @@ def on_doctree_resolved(self, doctree, docname):
             if self.builder.config.nwdiag_debug:
                 traceback.print_exc()
 
-            self.builder.warn('dot code %r: %s' % (node['code'], str(exc)))
+            logger.warning('dot code %r: %s', node['code'], exc)
             node.parent.remove(node)
 
 
