@@ -2,13 +2,9 @@
 
 from mock import patch
 from sphinx_testing import with_app
-from blockdiag.utils.compat import u
 
 import sys
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
+import unittest
 
 
 class TestSphinxcontribRackdiagErrors(unittest.TestCase):
@@ -53,7 +49,7 @@ class TestSphinxcontribRackdiagErrors(unittest.TestCase):
     @with_app(srcdir='tests/docs/rackdiag')
     @patch("sphinxcontrib.rackdiag.rackdiag.drawer.DiagramDraw.draw")
     def test_font_settings_error(self, app, status, warning, draw):
-        draw.side_effect = UnicodeEncodeError("", u(""), 0, 0, "")
+        draw.side_effect = UnicodeEncodeError("", "", 0, 0, "")
         app.builder.build_all()
         self.assertIn('UnicodeEncodeError caught (check your font settings)',
                       warning.getvalue())
