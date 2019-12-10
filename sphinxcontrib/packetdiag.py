@@ -26,7 +26,6 @@ from sphinx.util.osutil import ensuredir
 import packetdiag.utils.rst.nodes
 import packetdiag.utils.rst.directives
 from blockdiag.utils.bootstrap import detectfont, Application
-from blockdiag.utils.compat import u, string_types
 from blockdiag.utils.fontmap import FontMap
 from blockdiag.utils.rst.directives import with_blockdiag
 
@@ -95,7 +94,7 @@ def resolve_reference(builder, href):
     if href is None:
         return None
 
-    pattern = re.compile(u("^:ref:`(.+?)`"), re.UNICODE)
+    pattern = re.compile("^:ref:`(.+?)`", re.UNICODE)
     matched = pattern.search(href)
     if matched is None:
         return href
@@ -269,7 +268,7 @@ def on_builder_inited(self):
 
     try:
         fontpath = self.builder.config.packetdiag_fontpath
-        if isinstance(fontpath, string_types):
+        if isinstance(fontpath, str):
             fontpath = [fontpath]
 
         if fontpath:

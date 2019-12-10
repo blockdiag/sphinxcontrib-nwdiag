@@ -3,7 +3,6 @@
 import os
 import re
 from sphinx_testing import with_app
-from blockdiag.utils.compat import u
 
 import sys
 if sys.version_info < (2, 7):
@@ -18,13 +17,13 @@ with_png_app = with_app(srcdir='tests/docs/packetdiag',
                         buildername='latex',
                         write_docstring=True,
                         confoverrides={
-                            'latex_documents': [('index', 'test.tex', u(''), u('test'), 'manual')],
+                            'latex_documents': [('index', 'test.tex', '', 'test', 'manual')],
                         })
 with_pdf_app = with_app(srcdir='tests/docs/packetdiag',
                         buildername='latex',
                         write_docstring=True,
                         confoverrides={
-                            'latex_documents': [('index', 'test.tex', u(''), u('test'), 'manual')],
+                            'latex_documents': [('index', 'test.tex', '', 'test', 'manual')],
                             'packetdiag_latex_image_format': 'PDF',
                             'packetdiag_fontpath': packetdiag_fontpath,
                         })
@@ -32,7 +31,7 @@ with_oldpdf_app = with_app(srcdir='tests/docs/packetdiag',
                            buildername='latex',
                            write_docstring=True,
                            confoverrides={
-                               'latex_documents': [('index', 'test.tex', u(''), u('test'), 'manual')],
+                               'latex_documents': [('index', 'test.tex', '', 'test', 'manual')],
                                'packetdiag_tex_image_format': 'PDF',
                                'packetdiag_fontpath': packetdiag_fontpath,
                            })
