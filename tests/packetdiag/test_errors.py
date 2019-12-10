@@ -4,10 +4,7 @@ from mock import patch
 from sphinx_testing import with_app
 
 import sys
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
+import unittest
 
 
 class TestSphinxcontribPacketdiagErrors(unittest.TestCase):

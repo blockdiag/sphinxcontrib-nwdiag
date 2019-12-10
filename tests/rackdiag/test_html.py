@@ -2,11 +2,7 @@
 
 from sphinx_testing import with_app
 
-import sys
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
+import unittest
 
 with_png_app = with_app(srcdir='tests/docs/rackdiag',
                         buildername='html',
@@ -392,10 +388,7 @@ class TestSphinxcontribRackdiagHTML(unittest.TestCase):
         """
         app.builder.build_all()
         source = (app.outdir / 'index.html').read_text(encoding='utf-8')
-        if sys.version_info < (3, 0):
-            self.assertNotRegexpMatches(source, r'<a xlink:href="#hello-world">\n\s*<rect .*?>\n\s*</a>')
-        else:
-            self.assertNotRegex(source, r'<a xlink:href="#hello-world">\n\s*<rect .*?>\n\s*</a>')
+        self.assertNotRegex(source, r'<a xlink:href="#hello-world">\n\s*<rect .*?>\n\s*</a>')
         self.assertIn('undefined label: unknown_target', warning.getvalue())
 
     @with_svg_app

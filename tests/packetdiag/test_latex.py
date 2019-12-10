@@ -4,11 +4,7 @@ import os
 import re
 from sphinx_testing import with_app
 
-import sys
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
+import unittest
 
 CR = '\r?\n'
 
@@ -51,7 +47,6 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         self.assertRegexpMatches(source, r'\\sphinxincludegraphics{{packetdiag-.*?}.png}')
 
     @unittest.skipUnless(os.path.exists(packetdiag_fontpath), "TrueType font not found")
-    @unittest.skipIf(sys.version_info[:2] == (3, 2), "reportlab does not support python 3.2")
     @with_pdf_app
     def test_build_pdf_image1(self, app, status, warning):
         """
@@ -65,7 +60,6 @@ class TestSphinxcontribPacketdiagLatex(unittest.TestCase):
         self.assertRegexpMatches(source, r'\\sphinxincludegraphics{{packetdiag-.*?}.pdf}')
 
     @unittest.skipUnless(os.path.exists(packetdiag_fontpath), "TrueType font not found")
-    @unittest.skipIf(sys.version_info[:2] == (3, 2), "reportlab does not support python 3.2")
     @with_oldpdf_app
     def test_build_pdf_image2(self, app, status, warning):
         """

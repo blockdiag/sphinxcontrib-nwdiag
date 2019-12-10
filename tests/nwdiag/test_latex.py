@@ -4,11 +4,7 @@ import os
 import re
 from sphinx_testing import with_app
 
-import sys
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
+import unittest
 
 CR = '\r?\n'
 
@@ -50,7 +46,6 @@ class TestSphinxcontribNwdiagLatex(unittest.TestCase):
         self.assertRegexpMatches(source, r'\\sphinxincludegraphics{{nwdiag-.*?}.png}')
 
     @unittest.skipUnless(os.path.exists(nwdiag_fontpath), "TrueType font not found")
-    @unittest.skipIf(sys.version_info[:2] == (3, 2), "reportlab does not support python 3.2")
     @with_pdf_app
     def test_build_pdf_image1(self, app, status, warning):
         """
@@ -63,7 +58,6 @@ class TestSphinxcontribNwdiagLatex(unittest.TestCase):
         self.assertRegexpMatches(source, r'\\sphinxincludegraphics{{nwdiag-.*?}.pdf}')
 
     @unittest.skipUnless(os.path.exists(nwdiag_fontpath), "TrueType font not found")
-    @unittest.skipIf(sys.version_info[:2] == (3, 2), "reportlab does not support python 3.2")
     @with_oldpdf_app
     def test_build_pdf_image2(self, app, status, warning):
         """
