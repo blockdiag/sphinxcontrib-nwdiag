@@ -8,14 +8,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [py35, py36, py37, py38, blockdiag_dev]
+        name: [py37, py38, blockdiag_dev]
         include:
-        - name: py35
-          python: 3.5
-          toxenv: py35
-        - name: py36
-          python: 3.6
-          toxenv: py36
         - name: py37
           python: 3.7
           toxenv: py37
